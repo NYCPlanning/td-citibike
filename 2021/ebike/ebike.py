@@ -26,20 +26,20 @@ while datetime.datetime.now(pytz.timezone('US/Eastern'))<endtime:
     time.sleep(60)
 
 
-# Summary
-url='https://gbfs.citibikenyc.com/gbfs/en/station_information.json'
-df=pd.read_json(url)
-df=pd.DataFrame(df['data'][0])
-df=df[['station_id','name','lat','lon']].reset_index(drop=True)
-for i in sorted(os.listdir(path+'DATA/')):
-    tp=pd.read_csv(path+'DATA/'+i,dtype=float,converters={'station_id':str})
-    tp.columns=['station_id',i.replace('.csv','')]
-    df=pd.merge(df,tp,how='left',on='station_id')
-df=df.melt(id_vars=['station_id','name','lat','lon'],var_name='time',value_name='ebike')
-df=df[df['ebike']>0].reset_index(drop=True)
-df=df.groupby(['station_id','name','lat','lon'],as_index=False).agg({'ebike':'count'}).reset_index(drop=True)
-df=gpd.GeoDataFrame(df,geometry=[shapely.geometry.Point(x,y) for x,y in zip(df['lon'],df['lat'])],crs=4326)
-df.to_file(path+'EBIKE.geojson',driver='GeoJSON')
+# # Summary
+# url='https://gbfs.citibikenyc.com/gbfs/en/station_information.json'
+# df=pd.read_json(url)
+# df=pd.DataFrame(df['data'][0])
+# df=df[['station_id','name','lat','lon']].reset_index(drop=True)
+# for i in sorted(os.listdir(path+'DATA/')):
+#     tp=pd.read_csv(path+'DATA/'+i,dtype=float,converters={'station_id':str})
+#     tp.columns=['station_id',i.replace('.csv','')]
+#     df=pd.merge(df,tp,how='left',on='station_id')
+# df=df.melt(id_vars=['station_id','name','lat','lon'],var_name='time',value_name='ebike')
+# df=df[df['ebike']>0].reset_index(drop=True)
+# df=df.groupby(['station_id','name','lat','lon'],as_index=False).agg({'ebike':'count'}).reset_index(drop=True)
+# df=gpd.GeoDataFrame(df,geometry=[shapely.geometry.Point(x,y) for x,y in zip(df['lon'],df['lat'])],crs=4326)
+# df.to_file(path+'EBIKE.geojson',driver='GeoJSON')
 
 
 
