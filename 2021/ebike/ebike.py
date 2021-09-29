@@ -23,7 +23,7 @@ while datetime.datetime.now(pytz.timezone('US/Eastern'))<endtime:
     eb=eb[['station_id','num_bikes_available']].reset_index(drop=True)
     eb.to_csv(path+'DATA/'+timestamp.replace('-','').replace(':','').replace(' ','_')+'.csv',index=False)
     print(timestamp)
-    time.sleep(300)
+    time.sleep(600)
 
 
 # # Summary
